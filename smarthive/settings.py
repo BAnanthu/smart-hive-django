@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%74my3d_-45pb%1u7yeh=d++4w_hlyqrus0ogk$a_qiek7=vdr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smart-hive-django.herokuapp.com']
 
 
 # Application definition
