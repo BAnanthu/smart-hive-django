@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%74my3d_-45pb%1u7yeh=d++4w_hlyqrus0ogk$a_qiek7=vdr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['smart-hive-django.herokuapp.com']
+ALLOWED_HOSTS = ['smart-hive-django.herokuapp.com','127.0.0.1']
 
 
 # Application definition
