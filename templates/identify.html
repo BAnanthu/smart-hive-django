@@ -1,0 +1,104 @@
+
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block header %}
+    <div class=" shadow-sm d-flex justify-content-center">
+      <div class="row">
+        <div class="col ">
+          <img  class="img-fluid ps-5 pe-5 pt-2 pb-2" src="{% static '/images/logo.png' %}" style="max-width: 350px;" alt="logo" srcset="">
+        </div>
+      </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light " style="background-color: orangered !important;">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" style="color: white; font-weight: 600;" href="#">Identify</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {% for item in function %}
+            <li class="nav-item">
+              <a class="nav-link {% if item.id == active %} active {% endif %}" aria-current="page" href="{% url item.function_name 1 1 1 %}">{{item.function_name}}</a>
+            </li>
+              {% endfor %}
+
+
+          </ul>
+          <!-- <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form> -->
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- <div class=" d-flex justify-content-center " style="background-color: orangered; list-style: none;color: white;">
+      <li class="dropdown">
+          <button class="btn dropdown-toggle" style="background-color: orangered; box-shadow: none;color: white;"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Identify
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" >
+              <li><a class="dropdown-item" href="#">Identify</a></li>
+              <li><a class="dropdown-item" href="#">Protect</a></li>
+              <li><a class="dropdown-item" href="#">Detect</a></li>
+              <li><a class="dropdown-item" href="#">Respond</a></li>
+              <li><a class="dropdown-item" href="#">Recover</a></li>
+            </ul>
+        </li>
+    </div> -->
+
+
+
+{% include 'progress-bar.html' %}
+{% endblock %}
+
+
+{% block maincontent %}
+
+<div class=" mt-5">
+      <div class="row d-flex justify-content-center">
+        <h5 class="col-12 text-center " style="color: orangered;">{{subcat}}</h5>
+      </div>
+      <div class="row d-flex justify-content-center">
+       <p class="col-12 text-center">{{question}}<i class="fas fa-question-circle"></i></p>
+        <div class="row d-flex justify-content-center">
+          <h2  class="col-12 text-center">What is your {{level}}?</h2>
+        </div>
+        <div class="row d-flex justify-content-center mt-5 ">
+            {% for option in options %}
+          <div class=" col-xl-2  col-md-4 row mt-2 d-flex justify-content-center">
+            <div class="row option-selected d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">{{option}}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+          </div>
+            {% endfor %}
+<!--          <div class="col-xl-2  col-md-4 row mt-2 d-flex justify-content-center">-->
+<!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Inconsistent</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+<!--          </div>-->
+<!--          <div class="col-xl-2 col-md-4 row mt-2 d-flex justify-content-center">-->
+<!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Repetable</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+<!--          </div>-->
+<!--          <div class=" col-xl-2 row col-md-4 mt-2 d-flex justify-content-center">-->
+<!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Standardized</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+<!--          </div>-->
+<!--          <div class=" col-xl-2 row col-md-4 mt-2 d-flex justify-content-center">-->
+<!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Measured</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+<!--          </div>-->
+<!--          <div class=" col-xl-2 row col-md-4 mt-2 d-flex justify-content-center">-->
+<!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Optimized</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+<!--          </div>-->
+        </div>
+
+      </div>
+      <div class="row d-flex justify-content-center mt-5  mb-5">
+        <button class=" col-4 col-xl-1 " onclick="location.href='{% url funname 1 pre.pre_sub pre.pre_level%}'"><< Prev</button>
+        <span class="col-1 "></span>
+        <button class=" col-4 col-xl-1 " onclick="location.href='{% url funname 1 next.next_sub next.next_level %}'">Next >></button>
+      </div>
+   </div>
+  </div>
+
+
+{% endblock %}

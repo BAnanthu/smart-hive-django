@@ -1,1 +1,17 @@
 ananthu3454@gmail.com
+
+
+D:\Projects\Projects\react\smartHive\smart-hive-backend>heroku info -a smart-hive-django
+=== smart-hive-django
+Addons:         heroku-postgresql:hobby-dev
+Auto Cert Mgmt: false
+Dynos:          web: 1
+Git URL:        https://git.heroku.com/smart-hive-django.git
+Owner:          ananthu3454@gmail.com
+Pipeline:       smart-hive-django - staging
+Region:         us
+Repo Size:      0 B
+Slug Size:      62 MB
+Stack:          heroku-20
+Web URL:        https://smart-hive-django.herokuapp.com/
+>heroku run bash --app smart-hive-django
