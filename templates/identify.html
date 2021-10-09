@@ -68,9 +68,9 @@
   <div class="row d-flex justify-content-center">
     <span id="main-question"></span>
     <div class="row d-flex justify-content-center" id="your_level">
-      
+
     </div>
-    <div id="ajax_updated" class="row d-flex justify-content-center mt-5 " >
+    <div id="ajax_updated" class="row d-flex justify-content-center mt-5 ">
 
 
       <!--          <div class="col-xl-2  col-md-4 row mt-2 d-flex justify-content-center">-->
@@ -92,9 +92,9 @@
 
   </div>
   <div class="row d-flex justify-content-center mt-5  mb-5">
-    <!--        <button class=" col-4 col-xl-1 " onclick="location.href='{% url funname 1 pre.pre_sub pre.pre_level%}'"><< Prev</button>-->
+    <!--        <button class=" col-4 col-xl-1 " onclick=""><< Prev</button>-->
     <!--        <span class="col-1 "></span>-->
-    <!-- <button class=" col-4 col-xl-1 " onclick="location.href='{% url funname 1 next.next_sub next.next_level %}'">Next >></button> -->
+    <!-- <button class=" col-4 col-xl-1 " onclick="">Next >></button> -->
     <button id="next" class=" col-4 col-xl-1 " onclick="next()">Next >></button>
   </div>
 </div>
@@ -150,7 +150,7 @@
       $('#functions-list').empty()
       for (var i = 0; i < data.length; i++) {
         $('#functions-list').append(`<li class="nav-item">
-              <a class="nav-link  {% if item.id == active %} active {% endif %}" aria-current="page"   style="padding-right:30px;"><span onclick="main(${data[i]['id']})">${data[i]['name']}</span></a>
+              <a id="nav_${data[i]['id']}" name="nav" class="nav-link " aria-current="page"   style="padding-right:30px;"><span onclick="main(${data[i]['id']})">${data[i]['name']}</span></a>
             </li>`);
 
 
@@ -222,7 +222,7 @@
   //   },
   // });
 
-  var allOptions,allOptionsLength;
+  var allOptions, allOptionsLength;
   $.ajax({
     type: 'GET',
     cache: true,
@@ -239,14 +239,14 @@
 
 
   sessionStorage.function_id = 1;
-    sessionStorage.function_count = 1;
-    sessionStorage.category_id = 0;
-    sessionStorage.category_count = 1;
-    sessionStorage.sub_category_id = 1;
-    sessionStorage.sub_category_count = 1;
-    sessionStorage.level_id = 1;
-    sessionStorage.level_count = 1;
-    subcategory_collection=[]
+  sessionStorage.function_count = 1;
+  sessionStorage.category_id = 0;
+  sessionStorage.category_count = 1;
+  sessionStorage.sub_category_id = 1;
+  sessionStorage.sub_category_count = 1;
+  sessionStorage.level_id = 1;
+  sessionStorage.level_count = 1;
+  subcategory_collection = []
 
   function onNext() {
     sessionStorage.function_id = 1;
@@ -259,7 +259,7 @@
     sessionStorage.level_count = 1;
 
   }
-
+  categoryItemsCount = 0;
   function categoryGenerator(function_id) {
     $.ajax({
       type: 'GET',
@@ -270,14 +270,17 @@
 
         $('#progress-list').empty()
         for (var i = 0; i < data.length; i++) {
-          if(data[i]['function_id']==function_id){
+          if (data[i]['function_id'] == function_id) {
+            categoryItemsCount = categoryItemsCount + 1
+            console.log(currentCategory_id_id,categoryItemsCount);
+            console.log("categoryItemsCount", categoryItemsCount);
             $('#progress-list').append(`<div class="col-xl-2  col-md-6  pt-3">
               <div class="row text-center">
                 <span class=" sub-cat">${data[i]['name']}</span>
               </div>
               <div>
                 <div class="progress"  style="height: 25px;">
-                  <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" id="category${data[i]['id']}" style="width: 15%; background:#00b55a;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" id="category${data[i]['id']}" style="width: 0%; background:#00b55a;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
             </div>`);
@@ -306,7 +309,7 @@
   //     }
 
   //     console.log(subcategory_collection)
-  
+
   //     $('#sybcat').empty()
   //     $('#main-question').empty()
   //     $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[0]['name']}</h5>`);
@@ -320,76 +323,106 @@
 
   function main(function_id) {
     // alert(function_id);
-    next();
+    next(function_id);
     categoryGenerator(function_id);
     //  alert(sessionStorage.category_id);
     subCategory(sessionStorage.category_id)
-    
-    
-  }
 
-  function subCategory(category_id){
+
+  }
+  itemCount = 0
+  subCatCount= 1
+  function subCategory(category_id) {
     $.ajax({
-    type: 'GET',
-    cache: true,
-    url: 'http://127.0.0.1:8000/api/sub-category/',
-    success: function (data) {
-      console.log(data);
-      if(currentCategory_id_id!=data[category_id]['category_id_id']){
-        $(`#category${currentCategory_id_id}`).css('width','100%')
-        currentCategory_id_id = currentCategory_id_id + 1 ;
-        console.log(currentCategory_id_id,'next cat');
-        
-      }
-      $('#sybcat').empty()
-      $('#main-question').empty()
-      $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[category_id]['name']}</h5>`);
-      $('#main-question').append(`<p class="col-12 text-center">${data[category_id]['detail']}<i class="fas fa-question-circle"></i></p>`);
-    },
-    error: function (data) {
-      alert("Got an error dude... " + data);
-    },
-  });
+      type: 'GET',
+      cache: true,
+      url: 'http://127.0.0.1:8000/api/sub-category/',
+      success: function (data) {
+        console.log(data);
+        subCatCount = 0
+        data.forEach(itm => {
+         if( itm['category_id_id'] == currentCategory_id_id){
+          subCatCount = subCatCount + 1
+          console.log(subCatCount,"*******")
+         }
+        })
+        $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/subCatCount)*100}%`)
+        if (currentCategory_id_id != data[category_id]['category_id_id']) {
+          // $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/categoryItemsCount)*100}%`)
+          currentCategory_id_id = currentCategory_id_id + 1;
+          subCatCount = 0
+          itemCount = 0
+          console.log(currentCategory_id_id, 'next cat');
+         
+        }
+        itemCount = itemCount + 1
+        console.log("itemCount",itemCount);
+        $('#sybcat').empty()
+        $('#main-question').empty()
+        $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[category_id]['name']}</h5>`);
+        $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500">${data[category_id]['detail']}<i class="fas fa-question-circle"></i></p>`);
+      },
+      error: function (data) {
+        alert("Got an error dude... " + data);
+      },
+    });
   }
 
-
+function selected(element){
+  console.log(element)
+  document.getElementsByName('opts').forEach(ele => {
+    ele.style.background = 'white'
+    ele.style.color = "black"
+  })
+  element.style.background = "#e85500"
+  element.style.color = "white"
+}
 
   count = 0
-  curentCategory_item =0
+  curentCategory_item = 0
   currentCategory_id_id = 1
-function next(){
-  $('#ajax_updated').empty()
-  $('#your_level').empty()
-  console.log(allOptions);
-  if(count < allOptionsLength){
-    console.log("nexttt");
-    $('#your_level').append(`<h2 class="col-12 text-center">What is your ${allOptions[count]['level_name']}?</h2>`);
-    allOptions[count]['options'].forEach(element => {
-     
- 
- $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-             <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+  function next(id=0) {
+    $('#ajax_updated').empty()
+    $('#your_level').empty()
+   
+    document.getElementsByName("nav").forEach(e => {
+      e.classList.remove("active");
+    })
+    $(`#nav_${id}`).addClass("active")
+
+    console.log(allOptions);
+    if (count==4){
+      count = count+1;
+    }
+    if (count < allOptionsLength) {
+      console.log("nexttt");
+      $('#your_level').append(`<h2 class="col-12 text-center">What is your ${allOptions[count]['level_name']}?</h2>`);
+      allOptions[count]['options'].forEach(element => {
+
+
+        $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+             <div class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
           </div>`);
 
-});
-  }else{
-    count = 0
-    curentCategory_item = curentCategory_item + 1
-    subCategory(curentCategory_item)
-    $('#your_level').append(`<h2 class="col-12 text-center">What is your ${allOptions[count]['level_name']}?</h2>`);
-    allOptions[count]['options'].forEach(element => {
- 
- $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-             <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center" style="min-height:50px;">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+      });
+    } else {
+      count = 0
+      curentCategory_item = curentCategory_item + 1
+      subCategory(curentCategory_item)
+      $('#your_level').append(`<h2 class="col-12 text-center">What is your ${allOptions[count]['level_name']}?</h2>`);
+      allOptions[count]['options'].forEach(element => {
+
+        $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+             <div class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" style="min-height:50px;">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
           </div>`);
 
-});
-    console.log("end");
+      });
+      console.log("end");
+    }
+
+    count++
+
   }
- 
-  count++
- 
-}
 
 
 
