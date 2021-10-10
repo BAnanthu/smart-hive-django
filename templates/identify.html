@@ -229,7 +229,7 @@
   $.ajax({
     type: 'GET',
     cache: true,
-    url: 'http://127.0.0.1:8000/api/options/',
+    url: 'https://smart-hive-django.herokuapp.com/api/options/',
     success: function (data) {
       console.log(data);
       allOptions = data;
@@ -267,7 +267,7 @@
     $.ajax({
       type: 'GET',
       cache: true,
-      url: 'http://127.0.0.1:8000/api/Category/',
+      url: 'https://smart-hive-django.herokuapp.com/api/Category/',
       success: function (data) {
         console.log(data);
 
@@ -339,7 +339,7 @@
     $.ajax({
       type: 'GET',
       cache: true,
-      url: 'http://127.0.0.1:8000/api/sub-category/',
+      url: 'https://smart-hive-django.herokuapp.com/api/sub-category/',
       success: function (data) {
         console.log(data);
         subCatCount = 0
