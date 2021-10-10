@@ -101,10 +101,12 @@
 </div>
 
 <script>
-  main(1)
-  // $('document').ready(function (){
-  //   main(1)
-  // })
+  
+  $('document').ready(function (){
+    $('#progress-list').append('loading...')
+    setTimeout(function(){ main(1); }, 3000);
+
+  })
 
   //     $('button').click(function(id){
 
@@ -270,8 +272,9 @@
       cache: true,
       url: 'https://smart-hive-django.herokuapp.com/api/Category/',
       success: function (data) {
+        console.log('loading...');
         console.log(data);
-
+        $('#progress-list').append('loading...')
         $('#progress-list').empty()
         for (var i = 0; i < data.length; i++) {
           if (data[i]['function_id'] == function_id) {
