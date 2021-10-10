@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'smarthive.urls'
-
+DISABLE_COLLECTSTATIC=1
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
