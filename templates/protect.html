@@ -102,7 +102,7 @@
 
 <script>
   $('document').ready(function (){
-    main(1)
+    main(2)
   })
 
   //     $('button').click(function(id){
@@ -139,7 +139,7 @@
 
 
   sessionStorage.function_id = 1;
-  sessionStorage.category_id = 1;
+  sessionStorage.category_id = 30;
   sessionStorage.sub_category_id = 1;
   sessionStorage.level_id = 1;
 
@@ -241,9 +241,9 @@
   });
 
 
-  sessionStorage.function_id = 1;
+  sessionStorage.function_id = 2;
   sessionStorage.function_count = 1;
-  sessionStorage.category_id = 0;
+  sessionStorage.category_id = 29;
   sessionStorage.category_count = 1;
   sessionStorage.sub_category_id = 1;
   sessionStorage.sub_category_count = 1;
@@ -254,7 +254,7 @@
   function onNext() {
     sessionStorage.function_id = 1;
     sessionStorage.function_count = 1;
-    sessionStorage.category_id = 0;
+    sessionStorage.category_id = 29;
     sessionStorage.category_count = 1;
     sessionStorage.sub_category_id = 1;
     sessionStorage.sub_category_count = 1;
@@ -323,7 +323,7 @@
   //   },
   // });
   // }
- 
+
   function main(function_id) {
     // alert(function_id);
     next(function_id);
@@ -344,12 +344,16 @@
         console.log(data);
         subCatCount = 0
         data.forEach(itm => {
+         
          if( itm['category_id_id'] == currentCategory_id_id){
           subCatCount = subCatCount + 1
           console.log(subCatCount,"*******")
+          
          }
         })
+  
         $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/subCatCount)*100}%`)
+  
         if (currentCategory_id_id != data[category_id]['category_id_id']) {
           // $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/categoryItemsCount)*100}%`)
           currentCategory_id_id = currentCategory_id_id + 1;
@@ -382,8 +386,8 @@ function selected(element){
 }
 
   count = 0
-  curentCategory_item = 0
-  currentCategory_id_id = 1
+  curentCategory_item = 29
+  currentCategory_id_id = 7
   function next(id=0) {
     $('#ajax_updated').empty()
     $('#your_level').empty()
@@ -394,9 +398,7 @@ function selected(element){
     $(`#nav_${id}`).addClass("active")
 
     console.log(allOptions);
-    if (count==4){
-      count = count+1;
-    }
+   
     if (count < allOptionsLength) {
       console.log("nexttt");
       $('#your_level').append(`<h2 class="col-12 text-center">What is your ${allOptions[count]['level_name']}?</h2>`);
@@ -404,10 +406,14 @@ function selected(element){
 
 
         $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-             <div class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+             <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
           </div>`);
 
       });
+      if (count==4){
+      document.getElementById('Managed').style.background = "#e85500"
+      document.getElementById('Managed').style.color = "white"
+    }
     } else {
       count = 0
       curentCategory_item = curentCategory_item + 1
