@@ -15,3 +15,11 @@ Slug Size:      62 MB
 Stack:          heroku-20
 Web URL:        https://smart-hive-django.herokuapp.com/
 >heroku run bash --app smart-hive-django
+
+
+
+
+
+
+heroku apps
+heroku git:remote -a YOUR_APP
