@@ -23,3 +23,5 @@ Web URL:        https://smart-hive-django.herokuapp.com/
 
 heroku apps
 heroku git:remote -a YOUR_APP
+heroku run python manage.py migrate
+heroku run python manage.py createsuperuser
