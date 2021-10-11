@@ -232,7 +232,7 @@
   $.ajax({
     type: 'GET',
     cache: true,
-    url: 'https://smart-hive-django.herokuapp.com/api/options/',
+    url: 'http://127.0.0.1:8000/api/options/',
     success: function (data) {
       console.log(data);
       allOptions = data;
@@ -270,7 +270,7 @@
     $.ajax({
       type: 'GET',
       cache: true,
-      url: 'https://smart-hive-django.herokuapp.com/api/Category/',
+      url: 'http://127.0.0.1:8000/api/Category/',
       success: function (data) {
         console.log('loading...');
         console.log(data);
@@ -343,7 +343,7 @@
     $.ajax({
       type: 'GET',
       cache: true,
-      url: 'https://smart-hive-django.herokuapp.com/api/sub-category/',
+      url: 'http://127.0.0.1:8000/api/sub-category/',
       success: function (data) {
         console.log(data);
         subCatCount = 0
@@ -356,13 +356,14 @@
          }
         })
   
-        $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/subCatCount)*100}%`)
+        // $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/subCatCount)*100}%`)
   
         if (currentCategory_id_id != data[category_id]['category_id_id']) {
           // $(`#category${currentCategory_id_id}`).css('width', `${(itemCount/categoryItemsCount)*100}%`)
           currentCategory_id_id = currentCategory_id_id + 1;
-          subCatCount = 0
-          itemCount = 0
+          itemCountNew = 1
+          // subCatCount = 0
+          // itemCount = 0
           console.log(currentCategory_id_id, 'next cat');
          
         }
@@ -371,7 +372,7 @@
         $('#sybcat').empty()
         $('#main-question').empty()
         $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[category_id]['name']}</h5>`);
-        $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500">${data[category_id]['detail']}<i class="fas fa-question-circle"></i></p>`);
+        $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[category_id]['detail']}<i class="fas fa-question-circle"></i></p>`);
       },
       error: function (data) {
         alert("Got an error dude... " + data);
@@ -390,12 +391,18 @@ function selected(element){
 }
 
   count = 0
+  itemCountNew = 0
   curentCategory_item = 0
   currentCategory_id_id = 1
   function next(id=0) {
+
+    console.log("currentCategory_id_id",currentCategory_id_id,"itemCountNew",itemCountNew,"subCatCount",subCatCount);
+      itemCountNew = itemCountNew + 1
+
+    
     $('#ajax_updated').empty()
     $('#your_level').empty()
-   
+    $(`#category${currentCategory_id_id}`).css('width', `${(itemCountNew/(subCatCount*8))*100}%`)
     document.getElementsByName("nav").forEach(e => {
       e.classList.remove("active");
     })
@@ -414,10 +421,12 @@ function selected(element){
           </div>`);
 
       });
-      if (count==4){
-      document.getElementById('Managed').style.background = "#e85500"
-      document.getElementById('Managed').style.color = "white"
-    }
+      document.getElementById('None').style.background = "#e85500"
+      document.getElementById('None').style.color = "white"
+    //   if (count==4){
+    //   document.getElementById('Managed').style.background = "#e85500"
+    //   document.getElementById('Managed').style.color = "white"
+    // }
     } else {
       count = 0
       curentCategory_item = curentCategory_item + 1
