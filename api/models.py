@@ -21,6 +21,14 @@ class Category(models.Model):
 
 
 class SubCategory(models.Model):
+    category_id = models.ForeignKey(Category,related_name='sub_category1', on_delete=models.CASCADE)
+    subcategory_name = models.CharField(max_length=30)
+    subcategory_details = models.TextField()
+
+    def __str__(self):
+        return self.subcategory_name
+
+class SubCategory2(models.Model):
     category_id = models.ForeignKey(Category,related_name='sub_category', on_delete=models.CASCADE)
     subcategory_name = models.CharField(max_length=30)
     subcategory_details = models.TextField()

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 # Create your views here.
-from api.models import Function, Category, Level, SubCategory, Option
+from api.models import Function, Category, Level, SubCategory2, Option
 from api.serializers import FunctionSerializer, CategorySerializer, SubCategorySerializer, LevelSerializer
 
 
@@ -63,7 +63,7 @@ class GetSubCategory(APIView):
         """
         subcategory = [
             {'id': subcategory.id, 'name': subcategory.subcategory_name, 'detail': subcategory.subcategory_details,
-             'category_id_id': subcategory.category_id.id} for subcategory in SubCategory.objects.all()]
+             'category_id_id': subcategory.category_id.id} for subcategory in SubCategory2.objects.all()]
         return Response(subcategory)
 
 

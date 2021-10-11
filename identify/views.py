@@ -15,7 +15,7 @@ class Identify(View):
         #     category_id = 1
         #     subcategory_id = 1
         #     level_id = 1
-        function = Function.objects.all().order_by(id)
+        function = Function.objects.all()
         # category = Category.objects.filter(function_id=1)
         # sub_category = SubCategory.objects.get(id=subcategory_id, category_id=category_id)
         # level = Level.objects.get(id=level_id)

@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from api.models import Function, Category, SubCategory, Level, Option
+from api.models import Function, Category, SubCategory2, Level, Option
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = SubCategory
+        model = SubCategory2
         fields = "__all__"
 
 
