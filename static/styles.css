@@ -16,7 +16,7 @@ body{
 }
 .option{
     height: 50px;
-    width: 250px;
+    max-width: 320px;
     border: solid rgb(175, 175, 175) 1px;
     padding: 2px 5px;
     display: flex;

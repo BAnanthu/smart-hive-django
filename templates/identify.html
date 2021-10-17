@@ -423,10 +423,10 @@ function selected(element){
       });
       document.getElementById('None').style.background = "#e85500"
       document.getElementById('None').style.color = "white"
-    //   if (count==4){
-    //   document.getElementById('Managed').style.background = "#e85500"
-    //   document.getElementById('Managed').style.color = "white"
-    // }
+      if (count==4){
+      document.getElementById('Managed').style.background = "#e85500"
+      document.getElementById('Managed').style.color = "white"
+    }
     } else {
       count = 0
       curentCategory_item = curentCategory_item + 1
@@ -435,13 +435,13 @@ function selected(element){
       allOptions[count]['options'].forEach(element => {
 
         $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-             <div class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" style="min-height:50px;">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+             <div  class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" style="min-height:50px;">${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
           </div>`);
 
       });
       document.getElementById('None').style.background = "#e85500"
       document.getElementById('None').style.color = "white"
-      console.log("end");
+      // console.log("end");
     }
 
     count++

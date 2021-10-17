@@ -3,6 +3,7 @@ from . import views
 
 
 urlpatterns = [
+    path('', views.Nist.as_view(),name='IDENTIFY (ID)'),
     path('identify/', views.Identify.as_view(),name='IDENTIFY (ID)'),
     path('protect/', views.Protect.as_view(),name='PROTECT (PR)'),
     path('detect/', views.Detect.as_view(),name='DETECT (DE)'),

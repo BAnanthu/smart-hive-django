@@ -1,0 +1,447 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block header %}
+<div class="box" style="position: fixed;">
+
+    <div class="b b1"></div>
+    <div class="b b2"></div>
+    <div class="b b3"></div>
+    <div class="b b4"></div>
+
+</div>
+
+<div class=" shadow-sm d-flex justify-content-center">
+    <div class="row">
+        <div class="col ">
+            <img class="img-fluid ps-5 pe-5 pt-2 pb-2" src="{% static '/images/logo.png' %}" style="max-width: 350px;"
+                alt="logo" srcset="">
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light "
+    style="background-color: #e85500 !important;padding-bottom:0px !important;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" style="color: white; font-weight: 600;" href="#">Identify</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="functions-list">
+                <!-- {% for item in function %}
+            <li class="nav-item">
+              <a class="nav-link  {% if item.id == active %} active {% endif %}" aria-current="page" href="{% url item.function_name %}"  style="padding-right:30px;">{{item.function_name}}</a>
+            </li>
+              {% endfor %} -->
+
+
+            </ul>
+            <!-- <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form> -->
+        </div>
+    </div>
+</nav>
+
+
+<!-- <div class=" d-flex justify-content-center " style="background-color: orangered; list-style: none;color: white;">
+      <li class="dropdown">
+          <button class="btn dropdown-toggle" style="background-color: orangered; box-shadow: none;color: white;"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Identify
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" >
+              <li><a class="dropdown-item" href="#">Identify</a></li>
+              <li><a class="dropdown-item" href="#">Protect</a></li>
+              <li><a class="dropdown-item" href="#">Detect</a></li>
+              <li><a class="dropdown-item" href="#">Respond</a></li>
+              <li><a class="dropdown-item" href="#">Recover</a></li>
+            </ul>
+        </li>
+    </div> -->
+
+
+
+{% include 'progress-bar.html' %}
+{% endblock %}
+
+
+{% block maincontent %}
+
+<div class=" mt-5">
+    <div class="row d-flex justify-content-center" id="sybcat">
+
+    </div>
+    <div class="row d-flex justify-content-center">
+        <span id="main-question"></span>
+        <div class="row d-flex justify-content-center" id="your_level">
+
+        </div>
+        <div id="ajax_updated" class="row d-flex justify-content-center mt-5 ">
+
+
+            <!--          <div class="col-xl-2  col-md-4 row mt-2 d-flex justify-content-center">-->
+            <!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Inconsistent</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+            <!--          </div>-->
+            <!--          <div class="col-xl-2 col-md-4 row mt-2 d-flex justify-content-center">-->
+            <!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Repetable</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+            <!--          </div>-->
+            <!--          <div class=" col-xl-2 row col-md-4 mt-2 d-flex justify-content-center">-->
+            <!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Standardized</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+            <!--          </div>-->
+            <!--          <div class=" col-xl-2 row col-md-4 mt-2 d-flex justify-content-center">-->
+            <!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Measured</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+            <!--          </div>-->
+            <!--          <div class=" col-xl-2 row col-md-4 mt-2 d-flex justify-content-center">-->
+            <!--            <div class="row option d-flex justify-content-center"><span class="col-8 d-flex justify-content-center">Optimized</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>-->
+            <!--          </div>-->
+        </div>
+
+    </div>
+    <div class="row d-flex justify-content-center mt-5  mb-5">
+        <button id="prev" class=" col-4 col-xl-1 " onclick="previous()">
+            << Prev</button>
+                <span class="col-1 "></span>
+                <!-- <button class=" col-4 col-xl-1 " onclick="">Next >></button> -->
+                <button id="next" class=" col-4 col-xl-1 " onclick="next()">Next >></button>
+    </div>
+</div>
+</div>
+<script>
+    $("#next").hide()
+    $("#prev").hide()
+    // const valueEl = document.getElementById('value')
+    obj = {}
+    function counter(state = obj, action) {
+        switch (action.type) {
+            case 'FUNCTIONS':
+                console.log(action)
+                state["Functions"] = action.data
+                return state
+            case 'CATEGORY':
+                state["Categories"] = action.data
+                return state
+            case 'SUBCATEGORY':
+                state["SubCategories"] = action.data
+                return state
+            case 'QUESTIONS':
+                state["Questions"] = action.data
+                return state
+            case 'CATEGORIEIDLIST':
+                state["CategoryIdList"] = action.data
+                return state
+            case 'SUBCATEGORIEIDLIST':
+                state["subCategoryList"] = action.data
+                return state
+            case 'CURRENTQUESTION':
+                state["currentQuestionId"] = action.data
+                return state
+            case 'CURRENTSUBCATEGORYINDEX':
+                state["currentSubCategoryIndex"] = action.data
+                return state
+            case 'CURRENTCATEGORYINDEX':
+                state["currentCategoryIndex"] = action.data
+                return state
+            default:
+                return state
+        }
+    }
+
+    const store = Redux.createStore(counter)
+
+    function render() {
+        console.log(store.getState())
+        // valueEl.innerHTML = store.getState().toString()
+    }
+
+    render()
+    store.subscribe(render)
+
+
+    // document.getElementById('incrementIfOdd')
+    //   .addEventListener('click', function () {
+    //     if (store.getState() % 2 !== 0) {
+    //       store.dispatch({ type: 'INCREMENT' })
+    //     }
+    //   })
+
+
+    ////////////////////////////// FETCHING DATATS start/////////////////////////////
+    function fetchQuestions() {
+        return $.ajax({
+            type: 'GET',
+            cache: true,
+            url: 'https://smart-hive-django.herokuapp.com/api/options/',
+            success: function (data) {
+                // console.log(data);
+                setTimeout(function () {
+                    store.dispatch({ type: 'QUESTIONS', data: data })
+                }, 100)
+                // allOptions = data;
+                // allOptionsLength = allOptions.length
+            },
+            error: function (data) {
+                alert("Got an error dude... " + data);
+            },
+        });
+    }
+
+    function fetchFunctions() {
+        return $.ajax({
+            type: 'GET',
+            cache: true,
+            url: 'https://smart-hive-django.herokuapp.com/api/functions/',
+            success: function (data) {
+                // console.log(data);
+                setTimeout(function () {
+                    store.dispatch({ type: 'FUNCTIONS', data: data })
+                }, 100)
+                // allOptions = data;
+                // allOptionsLength = allOptions.length
+            },
+            error: function (data) {
+                alert("Got an error dude... " + data);
+            },
+        });
+    }
+
+
+    function fetchCategories() {
+
+        return $.ajax({
+            type: 'GET',
+            cache: true,
+            url: 'https://smart-hive-django.herokuapp.com/api/Category/',
+            success: function (data) {
+                // console.log(data);
+                setTimeout(function () {
+                    store.dispatch({ type: 'CATEGORY', data: data })
+                }, 100)
+                // allOptions = data;
+                // allOptionsLength = allOptions.length
+            },
+            error: function (data) {
+                alert("Got an error dude... " + data);
+            },
+        });
+    }
+
+
+    function fetchSubCategories() {
+        return $.ajax({
+            type: 'GET',
+            cache: true,
+            url: 'https://smart-hive-django.herokuapp.com/api/sub-category/',
+            success: function (data) {
+                // console.log(data);
+                setTimeout(function () {
+                    store.dispatch({ type: 'SUBCATEGORY', data: data })
+                }, 100)
+                // allOptions = data;
+                // allOptionsLength = allOptions.length
+            },
+            error: function (data) {
+                alert("Got an error dude... " + data);
+            },
+        });
+    }
+    ////////////////////////////// FETCHING DATATS end/////////////////////////////
+
+    function initNavElements(active = 1) {
+        var data = store.getState()['Functions']
+        $('#functions-list').empty()
+        for (var i = 0; i < data.length; i++) {
+            $('#functions-list').append(`<li class="nav-item">
+                <a id="nav_${data[i]['id']}" name="nav" class="nav-link ${active == data[i]['id'] ? 'active' : ''} " aria-current="page"  style="padding-right:30px;"><span onclick="SetBodyContent(${data[i]['id']})">${data[i]['name']}</span></a>
+                </li>`);
+        }
+    }
+
+
+    function setProgressBars(function_id) {
+        var data = store.getState()['Categories']
+        console.log(data);
+        $('#progress-list').append('loading...')
+        $('#progress-list').empty()
+        for (var i = 0; i < data.length; i++) {
+            if (data[i]['function_id'] == function_id) {
+                //     categoryItemsCount = categoryItemsCount + 1
+                //     console.log(currentCategory_id_id,categoryItemsCount);
+                //     console.log("categoryItemsCount", categoryItemsCount);
+                $('#progress-list').append(`<div class="col-xl-2  col-md-6  pt-3">
+              <div class="row text-center">
+                <span class=" sub-cat">${data[i]['name']}</span>
+              </div>
+              <div>
+                <div class="progress"  style="height: 25px;">
+                  <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" id="category${data[i]['id']}" style="width: 0%; background:#00b55a;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>`);
+            }
+        }
+    }
+
+    function seperateCategories(function_id) {
+        category_ids = []
+        var array = store.getState()['Categories']
+        for (var i = 0; i < array.length; i++) {
+            if (!(array[i]['id'] in category_ids) && array[i]['function_id'] == function_id) {
+                category_ids.push(array[i]['id'])
+                console.log(array[i]['id'])
+
+            }
+        }
+        console.log(category_ids)
+        store.dispatch({ type: 'CATEGORIEIDLIST', data: category_ids })
+
+
+
+    }
+
+    function seperateSubCategories(category_id) {
+        console.log(category_id);
+        subCategoryList = []
+        var array = store.getState()['SubCategories']
+        for (var i = 0; i < array.length; i++) {
+            if (array[i]['category_id_id'] == category_id) {
+                subCategoryList.push(array[i])
+                console.log(array[i]['category_id_id'])
+
+            }
+        }
+        console.log(subCategoryList)
+        store.dispatch({ type: 'SUBCATEGORIEIDLIST', data: subCategoryList })
+    }
+
+
+
+    function setSubCategories(subcategory_index) {
+        store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+        // setTimeout(function () {
+            if(subcategory_index == store.getState()['subCategoryList'].length){
+                subcategory_index=0;
+                store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+                // store.getState()['CategoryIdList']
+                // setTimeout(function () {
+                currentCategoryIndex = store.getState()['currentCategoryIndex']
+                store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
+                currentCategoryIndex = store.getState()['currentCategoryIndex']
+                seperateSubCategories(currentCategoryIndex)
+                var data = store.getState()['subCategoryList']
+                console.log(data,"printing...");
+                $('#sybcat').empty()
+                $('#main-question').empty()
+                $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+                $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+                // }, 600)
+               
+      
+            }else{
+                var data = store.getState()['subCategoryList']
+                console.log(data);
+
+                $('#sybcat').empty()
+                $('#main-question').empty()
+                $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+                $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+            }
+           
+        // }, 600)                   
+
+    }
+
+
+    function setQuestions(question_index) {
+        if (question_index < 8) {
+            console.log(question_index);
+            store.dispatch({ type: 'CURRENTQUESTION', data: question_index })
+        }
+        else {
+            question_index = 0
+            store.dispatch({ type: 'CURRENTQUESTION', data: 0 })
+            subcategory_index = store.getState()['currentSubCategoryIndex']
+            setSubCategories(subcategory_index + 1);
+        }
+        // setTimeout(function () {
+            var data = store.getState()['Questions']
+            console.log(data);
+
+            $('#ajax_updated').empty()
+            $('#your_level').empty()
+            $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
+            data[question_index]['options'].forEach(element => {
+
+                $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+             <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+          </div>`);
+
+            });
+
+            $(".box").hide()
+            $("#next").show()
+            $("#prev").show()
+        // }, 600)
+
+
+    }
+    ///////// MAIN BODY setter start //////////////////
+    function SetBodyContent(function_id, subcategory_index = 0, question_index = 0) {
+        $("#next").hide()
+        $("#prev").hide()
+        $('#sybcat').empty()
+        $('#main-question').empty()
+        $('#ajax_updated').empty()
+        $('#your_level').empty()
+        initNavElements(function_id);
+        setProgressBars(function_id);
+        seperateCategories(function_id);
+
+        // setTimeout(function () {
+            $(".box").show()
+            category_id = store.getState()['CategoryIdList'][0]
+            store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: category_id })
+            console.log(category_id,"category_idcategory_id");
+            seperateSubCategories(category_id)
+            setSubCategories(subcategory_index);
+            setQuestions(question_index)
+            $("#next").show()
+            $("#prev").show()
+        // }, 1000)
+
+       
+
+    }
+    ///////// MAIN BODY setter end //////////////////
+
+    $.when(fetchQuestions(), fetchFunctions(), fetchCategories(), fetchSubCategories()).done(function (a1, a2, a3, a4) {
+        // the code here will be executed when all four ajax requests resolve.
+        console.log("finishess");
+        setTimeout(function () {
+            initNavElements();
+            SetBodyContent(function_id = 1);
+            seperateCategories(function_id = 1);
+            seperateSubCategories(category_id = 1)
+        }, 100)
+
+
+    });
+
+    function next() {
+        $(".box").show()
+        var data = store.getState()['currentQuestionId']
+        question_index = data + 1
+        setQuestions(question_index)
+    }
+
+    function previous() {
+        $(".box").show()
+        var data = store.getState()['currentQuestionId']
+        question_index = data - 1
+        setQuestions(question_index)
+    }
+</script>
+
+{% endblock %}
