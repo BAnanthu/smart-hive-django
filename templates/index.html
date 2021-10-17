@@ -144,6 +144,9 @@
             case 'CURRENTCATEGORYINDEX':
                 state["currentCategoryIndex"] = action.data
                 return state
+            case 'CURRENTFUNCTIONID':
+                state["currentFunctionId"] = action.data
+                return state
             default:
                 return state
         }
@@ -327,15 +330,25 @@
                 // store.getState()['CategoryIdList']
                 // setTimeout(function () {
                 currentCategoryIndex = store.getState()['currentCategoryIndex']
+                console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
+                category_id = store.getState()['CategoryIdList']
+                if(category_id.length == currentCategoryIndex){
+                    console.log("PROTECTED....",category_id.length, currentCategoryIndex)
+                    currentFunctionId = store.getState()['currentFunctionId']
+                    SetBodyContent(currentFunctionId+1)
+                }else{
+                    console.log(currentCategoryIndex)
                 store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
                 currentCategoryIndex = store.getState()['currentCategoryIndex']
                 seperateSubCategories(currentCategoryIndex)
                 var data = store.getState()['subCategoryList']
-                console.log(data,"printing...");
+                console.log(data,"printings...");
                 $('#sybcat').empty()
                 $('#main-question').empty()
                 $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
                 $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+                }
+               
                 // }, 600)
                
       
@@ -395,6 +408,7 @@
         $('#main-question').empty()
         $('#ajax_updated').empty()
         $('#your_level').empty()
+        store.dispatch({ type: 'CURRENTFUNCTIONID', data: function_id })
         initNavElements(function_id);
         setProgressBars(function_id);
         seperateCategories(function_id);
