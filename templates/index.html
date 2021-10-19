@@ -323,6 +323,54 @@
 
     function setSubCategories(subcategory_index) {
         store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+
+
+        // setTimeout(function () {
+            // if(subcategory_index == store.getState()['subCategoryList'].length){
+            //     subcategory_index=0;
+            //     store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+            //     // store.getState()['CategoryIdList']
+            //     // setTimeout(function () {
+            //     currentCategoryIndex = store.getState()['currentCategoryIndex']
+            //     console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
+            //     category_id = store.getState()['CategoryIdList']
+            //     if(category_id.length == currentCategoryIndex){
+            //         console.log("PROTECTED....",category_id.length, currentCategoryIndex)
+            //         currentFunctionId = store.getState()['currentFunctionId']
+            //         SetBodyContent(currentFunctionId+1)
+            //     }else{
+            //         console.log(currentCategoryIndex)
+            //     store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
+            //     currentCategoryIndex = store.getState()['currentCategoryIndex']
+            //     seperateSubCategories(currentCategoryIndex)
+            //     var data = store.getState()['subCategoryList']
+            //     console.log(data,"printings...");
+            //     $('#sybcat').empty()
+            //     $('#main-question').empty()
+            //     $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+            //     $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+            //     }
+               
+            //     // }, 600)
+               
+      
+            // }else{
+            //     var data = store.getState()['subCategoryList']
+            //     console.log(data);
+
+            //     $('#sybcat').empty()
+            //     $('#main-question').empty()
+            //     $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+            //     $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+            // }
+           
+        // }, 600)                   
+
+    }
+
+
+    function setPreviousSubCategories(subcategory_index) {
+        store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
         // setTimeout(function () {
             if(subcategory_index == store.getState()['subCategoryList'].length){
                 subcategory_index=0;
@@ -338,15 +386,15 @@
                     SetBodyContent(currentFunctionId+1)
                 }else{
                     console.log(currentCategoryIndex)
-                store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
-                currentCategoryIndex = store.getState()['currentCategoryIndex']
-                seperateSubCategories(currentCategoryIndex)
-                var data = store.getState()['subCategoryList']
-                console.log(data,"printings...");
-                $('#sybcat').empty()
-                $('#main-question').empty()
-                $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
-                $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+                    store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
+                    currentCategoryIndex = store.getState()['currentCategoryIndex']
+                    seperateSubCategories(currentCategoryIndex)
+                    var data = store.getState()['subCategoryList']
+                    console.log(data,"printings...");
+                    $('#sybcat').empty()
+                    $('#main-question').empty()
+                    $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+                    $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
                 }
                
                 // }, 600)
@@ -367,6 +415,7 @@
     }
 
 
+
     function setQuestions(question_index) {
         if (question_index < 8) {
             console.log(question_index);
@@ -376,7 +425,7 @@
             question_index = 0
             store.dispatch({ type: 'CURRENTQUESTION', data: 0 })
             subcategory_index = store.getState()['currentSubCategoryIndex']
-            setSubCategories(subcategory_index + 1);
+            setPreviousSubCategories(subcategory_index + 1);
         }
         // setTimeout(function () {
             var data = store.getState()['Questions']
@@ -400,6 +449,72 @@
 
 
     }
+
+
+
+    function setPreviousQuestions(question_index) {
+
+        if(question_index < 0){
+            question_index = 7
+            store.dispatch({ type: 'CURRENTQUESTION', data: 7 })
+            subcategory_index = store.getState()['currentSubCategoryIndex']
+            setSubCategories(subcategory_index - 1);
+        }else{
+            store.dispatch({ type: 'CURRENTQUESTION', data: question_index })
+        }
+
+            var data = store.getState()['Questions']
+            console.log(data);
+
+            $('#ajax_updated').empty()
+            $('#your_level').empty()
+            $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
+            data[question_index]['options'].forEach(element => {
+
+                $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+             <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+          </div>`);
+
+            });
+
+            $(".box").hide()
+            $("#next").show()
+            $("#prev").show()
+
+
+        // if (question_index == 0) {
+        //     console.log(question_index);
+        //     store.dispatch({ type: 'CURRENTQUESTION', data: question_index })
+        // }
+        // else {
+        //     question_index = 7
+        //     store.dispatch({ type: 'CURRENTQUESTION', data: 7 })
+        //     subcategory_index = store.getState()['currentSubCategoryIndex']
+        //     setSubCategories(subcategory_index - 1);
+        // }
+        // // setTimeout(function () {
+        //     var data = store.getState()['Questions']
+        //     console.log(data);
+
+        //     $('#ajax_updated').empty()
+        //     $('#your_level').empty()
+        //     $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
+        //     data[question_index]['options'].forEach(element => {
+
+        //         $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+        //      <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+        //   </div>`);
+
+        //     });
+
+        //     $(".box").hide()
+        //     $("#next").show()
+        //     $("#prev").show()
+        // // }, 600)
+
+
+    }
+    
     ///////// MAIN BODY setter start //////////////////
     function SetBodyContent(function_id, subcategory_index = 0, question_index = 0) {
         $("#next").hide()
@@ -454,7 +569,7 @@
         $(".box").show()
         var data = store.getState()['currentQuestionId']
         question_index = data - 1
-        setQuestions(question_index)
+        setPreviousQuestions(question_index)
     }
 </script>
 
