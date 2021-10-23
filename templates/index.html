@@ -147,6 +147,9 @@
             case 'CURRENTFUNCTIONID':
                 state["currentFunctionId"] = action.data
                 return state
+            case 'CURRENTCATEGORYIDLISTINDEX':
+                state["currentCategoryIdListIndex"] = action.data
+                return state
             default:
                 return state
         }
@@ -326,52 +329,6 @@
 
 
         // setTimeout(function () {
-            // if(subcategory_index == store.getState()['subCategoryList'].length){
-            //     subcategory_index=0;
-            //     store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
-            //     // store.getState()['CategoryIdList']
-            //     // setTimeout(function () {
-            //     currentCategoryIndex = store.getState()['currentCategoryIndex']
-            //     console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
-            //     category_id = store.getState()['CategoryIdList']
-            //     if(category_id.length == currentCategoryIndex){
-            //         console.log("PROTECTED....",category_id.length, currentCategoryIndex)
-            //         currentFunctionId = store.getState()['currentFunctionId']
-            //         SetBodyContent(currentFunctionId+1)
-            //     }else{
-            //         console.log(currentCategoryIndex)
-            //     store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
-            //     currentCategoryIndex = store.getState()['currentCategoryIndex']
-            //     seperateSubCategories(currentCategoryIndex)
-            //     var data = store.getState()['subCategoryList']
-            //     console.log(data,"printings...");
-            //     $('#sybcat').empty()
-            //     $('#main-question').empty()
-            //     $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
-            //     $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
-            //     }
-               
-            //     // }, 600)
-               
-      
-            // }else{
-            //     var data = store.getState()['subCategoryList']
-            //     console.log(data);
-
-            //     $('#sybcat').empty()
-            //     $('#main-question').empty()
-            //     $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
-            //     $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
-            // }
-           
-        // }, 600)                   
-
-    }
-
-
-    function setPreviousSubCategories(subcategory_index) {
-        store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
-        // setTimeout(function () {
             if(subcategory_index == store.getState()['subCategoryList'].length){
                 subcategory_index=0;
                 store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
@@ -386,15 +343,17 @@
                     SetBodyContent(currentFunctionId+1)
                 }else{
                     console.log(currentCategoryIndex)
-                    store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
-                    currentCategoryIndex = store.getState()['currentCategoryIndex']
-                    seperateSubCategories(currentCategoryIndex)
-                    var data = store.getState()['subCategoryList']
-                    console.log(data,"printings...");
-                    $('#sybcat').empty()
-                    $('#main-question').empty()
-                    $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
-                    $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+                store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex + 1 })
+                currentCategoryIdListIndex = store.getState()['currentCategoryIdListIndex']
+                store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: currentCategoryIdListIndex +1})
+                currentCategoryIndex = store.getState()['currentCategoryIndex']
+                seperateSubCategories(currentCategoryIndex)
+                var data = store.getState()['subCategoryList']
+                console.log(data,"printings...");
+                $('#sybcat').empty()
+                $('#main-question').empty()
+                $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+                $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
                 }
                
                 // }, 600)
@@ -415,6 +374,56 @@
     }
 
 
+    function setPreviousSubCategories(subcategory_index) {
+        // store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+        // setTimeout(function () {
+            if(subcategory_index < 0){
+                currentCategoryIdListIndex = store.getState()['currentCategoryIdListIndex']
+                if(currentCategoryIdListIndex == 0){
+                    currentFunctionId = store.getState()['currentFunctionId']
+                    SetPreviousBodyContent(currentFunctionId-1)
+                }
+ 
+                currentCategoryIndex = store.getState()['currentCategoryIndex']
+                store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: currentCategoryIndex - 1 })
+                    currentCategoryIndex = store.getState()['currentCategoryIndex']
+                    seperateSubCategories(currentCategoryIndex)
+                    console.log(currentCategoryIndex);
+                    var data = store.getState()['subCategoryList']
+                    subcategory_index=data.length-1;
+                    store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+                    console.log(data,"printings...");
+                    
+                    currentCategoryIndex = store.getState()['currentCategoryIndex']
+                console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
+                category_id = store.getState()['CategoryIdList']
+                
+              
+                   
+                    $('#sybcat').empty()
+                    $('#main-question').empty()
+                    $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+                    $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+                    
+            } else{
+                store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
+                var data = store.getState()['subCategoryList']
+                console.log(data);
+
+
+                currentCategoryIndex = store.getState()['currentCategoryIndex']
+                console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
+                category_id = store.getState()['CategoryIdList']
+     
+                $('#sybcat').empty()
+                $('#main-question').empty()
+                $('#sybcat').append(`<h5 class="col-12 text-center " style="color: #e85500;">${data[subcategory_index]['name']}</h5>`);
+                $('#main-question').append(`<p class="col-12 text-center" style="color:#e85500; font-Size:20px;">${data[subcategory_index]['detail']}<i class="fas fa-question-circle"></i></p>`);
+            }           
+
+    }
+
+
 
     function setQuestions(question_index) {
         if (question_index < 8) {
@@ -425,7 +434,8 @@
             question_index = 0
             store.dispatch({ type: 'CURRENTQUESTION', data: 0 })
             subcategory_index = store.getState()['currentSubCategoryIndex']
-            setPreviousSubCategories(subcategory_index + 1);
+
+            setSubCategories(subcategory_index + 1);
         }
         // setTimeout(function () {
             var data = store.getState()['Questions']
@@ -458,7 +468,7 @@
             question_index = 7
             store.dispatch({ type: 'CURRENTQUESTION', data: 7 })
             subcategory_index = store.getState()['currentSubCategoryIndex']
-            setSubCategories(subcategory_index - 1);
+            setPreviousSubCategories(subcategory_index - 1);
         }else{
             store.dispatch({ type: 'CURRENTQUESTION', data: question_index })
         }
@@ -532,10 +542,12 @@
             $(".box").show()
             category_id = store.getState()['CategoryIdList'][0]
             store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: category_id })
+            category_id_list = store.getState()['CategoryIdList']
+            store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list.indexOf(category_id)})
             console.log(category_id,"category_idcategory_id");
             seperateSubCategories(category_id)
-            setSubCategories(subcategory_index);
-            setQuestions(question_index)
+            setPreviousSubCategories(subcategory_index);
+            setPreviousQuestions(question_index)
             $("#next").show()
             $("#prev").show()
         // }, 1000)
@@ -544,6 +556,36 @@
 
     }
     ///////// MAIN BODY setter end //////////////////
+    function SetPreviousBodyContent(function_id) {
+        // $("#next").hide()
+        // $("#prev").hide()
+        // $('#sybcat').empty()
+        // $('#main-question').empty()
+        // $('#ajax_updated').empty()
+        // $('#your_level').empty()
+        category_id_list = store.getState()['CategoryIdList']
+        store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list.length-1})
+        store.dispatch({ type: 'CURRENTFUNCTIONID', data: function_id })
+        initNavElements(function_id);
+        setProgressBars(function_id);
+        seperateCategories(function_id);
+
+        // setTimeout(function () {
+            // $(".box").show()
+            // category_id = store.getState()['CategoryIdList'][0]
+            // store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: category_id })
+            // console.log(category_id,"category_idcategory_id");
+            // seperateSubCategories(category_id)
+            // setSubCategories(subcategory_index);
+            // setQuestions(question_index)
+            // $("#next").show()
+            // $("#prev").show()
+        // }, 1000)
+
+       
+
+    }
+
 
     $.when(fetchQuestions(), fetchFunctions(), fetchCategories(), fetchSubCategories()).done(function (a1, a2, a3, a4) {
         // the code here will be executed when all four ajax requests resolve.
