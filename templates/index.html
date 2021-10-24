@@ -477,14 +477,16 @@
             $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
             if(question_index==4){
                 $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-                    <div id="${data[question_index]['options'][2]['option']}" class="row option d-flex justify-content-center" onclick="" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][2]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                   <div class="col-12  d-flex justify-content-center align-items-center"><h1 style="color:#e85500">90%</h1></div>
+                    <div id="${data[question_index]['options'][6]['option']}" class="row option d-flex justify-content-center" onclick=""  style="background:#e85500;color:white" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][6]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
                 </div>`);
             }
             else{
                 data[question_index]['options'].forEach(element => {
 
                     $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-                    <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                    
+                        <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
                     </div>`);
 
                     });
@@ -521,6 +523,7 @@
             $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
             if(question_index==4){
                 $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+                    <h3>33.88</h3>
                     <div id="${data[question_index]['options'][2]['option']}" class="row option d-flex justify-content-center" onclick="" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][2]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
                 </div>`);
             }
