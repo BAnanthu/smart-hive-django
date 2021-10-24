@@ -165,7 +165,15 @@
     render()
     store.subscribe(render)
 
-
+    function selected(element){
+        console.log(element)
+        document.getElementsByName('opts').forEach(ele => {
+            ele.style.background = 'white'
+            ele.style.color = "black"
+        })
+        element.style.background = "#e85500"
+        element.style.color = "white"
+    }
     // document.getElementById('incrementIfOdd')
     //   .addEventListener('click', function () {
     //     if (store.getState() % 2 !== 0) {
@@ -395,8 +403,8 @@
                     console.log(data,"printings...");
                     
                     currentCategoryIndex = store.getState()['currentCategoryIndex']
-                console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
-                category_id = store.getState()['CategoryIdList']
+                    console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
+                    category_id = store.getState()['CategoryIdList']
                 
               
                    
@@ -429,6 +437,7 @@
         if (question_index < 8) {
             console.log(question_index);
             store.dispatch({ type: 'CURRENTQUESTION', data: question_index })
+            
         }
         else {
             question_index = 0
@@ -444,14 +453,23 @@
             $('#ajax_updated').empty()
             $('#your_level').empty()
             $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
-            data[question_index]['options'].forEach(element => {
-
+            if(question_index==4){
                 $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-             <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
-          </div>`);
+                    <div id="${data[question_index]['options'][2]['option']}" class="row option d-flex justify-content-center" onclick="" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][2]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                </div>`);
+            }
+            else{
+                data[question_index]['options'].forEach(element => {
 
-            });
+                    $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+                    <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                    </div>`);
 
+                    });
+                    document.getElementById('None').style.background = "#e85500"
+                    document.getElementById('None').style.color = "white"
+            }
+           
             $(".box").hide()
             $("#next").show()
             $("#prev").show()
@@ -479,18 +497,25 @@
             $('#ajax_updated').empty()
             $('#your_level').empty()
             $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
-            data[question_index]['options'].forEach(element => {
-
+            if(question_index==4){
                 $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-             <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
-          </div>`);
+                    <div id="${data[question_index]['options'][2]['option']}" class="row option d-flex justify-content-center" onclick="" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][2]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                </div>`);
+            }
+            else{
+                data[question_index]['options'].forEach(element => {
 
-            });
+                    $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
+                    <div id="${element['option']}" class="row option d-flex justify-content-center" onclick="selected(this)" name="opts"><span class="col-8 d-flex justify-content-center" >${element['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                    </div>`);
 
+                    });
+                    document.getElementById('None').style.background = "#e85500"
+                    document.getElementById('None').style.color = "white"
+            }
             $(".box").hide()
             $("#next").show()
             $("#prev").show()
-
 
         // if (question_index == 0) {
         //     console.log(question_index);
@@ -564,7 +589,10 @@
         // $('#ajax_updated').empty()
         // $('#your_level').empty()
         category_id_list = store.getState()['CategoryIdList']
-        store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list.length-1})
+        console.log(category_id_list + "***********************");
+        console.log(category_id_list.length + "---")
+        store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list -1})
+        console.log(category_id_list.length-1 + "***********************");
         store.dispatch({ type: 'CURRENTFUNCTIONID', data: function_id })
         initNavElements(function_id);
         setProgressBars(function_id);
