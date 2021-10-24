@@ -14,10 +14,12 @@
 
 <div class=" shadow-sm d-flex justify-content-center">
     <div class="row">
-        <div class="col ">
+        <div class="col">
             <img class="img-fluid ps-5 pe-5 pt-2 pb-2" src="{% static '/images/logo.png' %}" style="max-width: 350px;"
                 alt="logo" srcset="">
+              
         </div>
+       
     </div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light "
@@ -38,6 +40,7 @@
 
 
             </ul>
+            <a href="{% url 'logout' %}" class="col-2 " style="text-decoration: none;color: white;"><span ><i class="fas fa-sign-out"></i> logout</span></a>
             <!-- <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -150,6 +153,18 @@
             case 'CURRENTCATEGORYIDLISTINDEX':
                 state["currentCategoryIdListIndex"] = action.data
                 return state
+            case 'TOTALQUESTIONS':
+                state["totalQuestions"] = action.data
+                return state
+            case 'CURRENTPROGRESSCOUNT':
+                state["currentProgressCount"] = action.data
+                return state
+            case 'LASTPROGRESSCOUNT':
+                state["lastProgressCount"] = action.data
+                return state
+            case 'DIVIDENTPROGRESS':
+                state["dividentProgress"] = action.data
+                return state
             default:
                 return state
         }
@@ -252,6 +267,11 @@
                 // console.log(data);
                 setTimeout(function () {
                     store.dispatch({ type: 'SUBCATEGORY', data: data })
+                    var SubCategories = store.getState()['SubCategories']
+                    store.dispatch({ type: 'TOTALQUESTIONS', data: SubCategories.length * 8 })
+                    store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: 0 })
+                    store.dispatch({ type: 'LASTPROGRESSCOUNT', data: 0 })
+                    store.dispatch({ type: 'DIVIDENTPROGRESS', data: 1 })
                 }, 100)
                 // allOptions = data;
                 // allOptionsLength = allOptions.length
@@ -333,11 +353,13 @@
 
 
     function setSubCategories(subcategory_index) {
+       
         store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
 
 
         // setTimeout(function () {
             if(subcategory_index == store.getState()['subCategoryList'].length){
+                store.dispatch({ type: 'DIVIDENTPROGRESS', data: 1 })
                 subcategory_index=0;
                 store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
                 // store.getState()['CategoryIdList']
@@ -615,6 +637,8 @@
     }
 
 
+
+
     $.when(fetchQuestions(), fetchFunctions(), fetchCategories(), fetchSubCategories()).done(function (a1, a2, a3, a4) {
         // the code here will be executed when all four ajax requests resolve.
         console.log("finishess");
@@ -628,14 +652,40 @@
 
     });
 
+    function updateProgress(){
+        subCategoryList = store.getState()['subCategoryList']
+        dividentProgress = store.getState()['dividentProgress']
+        currentCategoryIndex = store.getState()['currentCategoryIndex']
+        CategoryIdList = store.getState()['CategoryIdList']
+        console.log(dividentProgress+ 'ww%%%%%%%%%%%%%%%%%%%%');
+        var percentage = (dividentProgress/(subCategoryList.length * 8))*100;
+        console.log(percentage+ '%%%%%%%%%%%%%%%%%%%%');
+    $(`#category${currentCategoryIndex}`).css('width', `${percentage}%`)
+    // store.dispatch({ type: 'DIVIDENTPROGRESS', data: 0 })
+    }
+
     function next() {
+        var dividentProgress = store.getState()['dividentProgress']
+        store.dispatch({ type: 'DIVIDENTPROGRESS', data: dividentProgress + 1 })
         $(".box").show()
         var data = store.getState()['currentQuestionId']
         question_index = data + 1
         setQuestions(question_index)
+        var currentProgressCount = store.getState()['currentProgressCount']
+        var lastProgressCount = store.getState()['lastProgressCount']
+        if(currentProgressCount == lastProgressCount){
+                    store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount + 1 })
+                    store.dispatch({ type: 'LASTPROGRESSCOUNT', data:lastProgressCount +1})
+                    updateProgress()
+        }else{
+            store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount + 1 })
+        }
     }
 
     function previous() {
+        var currentProgressCount = store.getState()['currentProgressCount']
+        store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount - 1 })
+
         $(".box").show()
         var data = store.getState()['currentQuestionId']
         question_index = data - 1
