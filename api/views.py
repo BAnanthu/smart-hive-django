@@ -52,7 +52,7 @@ class GetCategory(APIView):
         Return a list of all users.
         """
         category_name = [{'id': category.id, 'name': category.category_name, 'function_id': category.function_id.id} for
-                         category in Category.objects.all()]
+                         category in Category.objects.order_by('id')]
         return Response(category_name)
 
 
