@@ -165,13 +165,114 @@
             case 'DIVIDENTPROGRESS':
                 state["dividentProgress"] = action.data
                 return state
+            case 'TABPROGRESSBARSTATE':
+                state["tabProgressBarState"] = action.data
+                return state
             default:
                 return state
         }
     }
 
-    const store = Redux.createStore(counter)
+    function calcpercentage(subCategoryListLength,dividentProgress,currentCategoryIndex){
+        CategoryIdList = store.getState()['CategoryIdList']
+        
+        try{
+            for(i=0;i<=CategoryIdList.indexOf(currentCategoryIndex);i++){
+            $(`#category${CategoryIdList[i]}`).css('width', '100%')
+            }
+            
+        }
+        catch{
+            console.log("error");
+        }
+       
+        var percentage = (dividentProgress/(subCategoryListLength * 8))*100;
+        $(`#category${currentCategoryIndex}`).css('width', `${percentage}%`)
+        console.log(currentCategoryIndex +" "+ "mainnn" +subCategoryListLength + ' ' + dividentProgress + ' '  +percentage)
+    }
+    
+    function setPageStateIndexValues(){
+        currentFunctionId = store.getState()['currentFunctionId']
+        tabProgressBarState = store.getState()['tabProgressBarState'][currentFunctionId-1]
 
+        currentQuestionId = tabProgressBarState['currentQuestionId']
+        store.dispatch({ type: 'CURRENTQUESTION', data: currentQuestionId })
+
+        currentSubCategoryIndex = tabProgressBarState['currentSubCategoryIndex']
+        store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: currentSubCategoryIndex })
+
+        // currentCategoryIdListIndex = store.getState()['currentCategoryIdListIndex'][currentFunctionId-1]
+        // store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: currentCategoryIdListIndex })
+
+        // lastProgressCount = store.getState()['lastProgressCount'][currentFunctionId-1]
+        // store.dispatch({ type: 'LASTPROGRESSCOUNT', data: lastProgressCount })
+
+        // currentProgressCount = store.getState()['currentProgressCount'][currentFunctionId-1]
+        // store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount })
+    }
+
+    const store = Redux.createStore(counter)
+    tabProgressBarState = [
+        {
+            subCategoryListLength:0,
+            dividentProgress:0,
+            currentCategoryIndex:0,
+            complete:false,
+            currentQuestionId:0,
+            currentSubCategoryIndex:0,
+            currentCategoryIdListIndex:0,
+            lastProgressCount:0,
+            currentProgressCount:0,
+        },
+        {
+            subCategoryListLength:0,
+            dividentProgress:0,
+            currentCategoryIndex:0,
+            complete:false,
+            currentQuestionId:0,
+            currentSubCategoryIndex:0,
+            currentCategoryIdListIndex:0,
+            lastProgressCount:0,
+            currentProgressCount:0,
+        },
+        {
+            subCategoryListLength:0,
+            dividentProgress:0,
+            currentCategoryIndex:0,
+            complete:false,
+            currentQuestionId:0,
+            currentSubCategoryIndex:0,
+            currentCategoryIdListIndex:0,
+            lastProgressCount:0,
+            currentProgressCount:0,
+        },
+        {
+            subCategoryListLength:0,
+            dividentProgress:0,
+            currentCategoryIndex:0,
+            complete:false,
+            currentQuestionId:0,
+            currentSubCategoryIndex:0,
+            currentCategoryIdListIndex:0,
+            lastProgressCount:0,
+            currentProgressCount:0,
+        },
+        {
+            subCategoryListLength:0,
+            dividentProgress:0,
+            currentCategoryIndex:0,
+            complete:false,
+            currentQuestionId:0,
+            currentSubCategoryIndex:0,
+            currentCategoryIdListIndex:0,
+            lastProgressCount:0,
+            currentProgressCount:0,
+        },
+    ]
+
+
+  
+    store.dispatch({ type: 'TABPROGRESSBARSTATE', data: tabProgressBarState })
     function render() {
         console.log(store.getState())
         // valueEl.innerHTML = store.getState().toString()
@@ -189,6 +290,7 @@
         element.style.background = "#e85500"
         element.style.color = "white"
     }
+
     // document.getElementById('incrementIfOdd')
     //   .addEventListener('click', function () {
     //     if (store.getState() % 2 !== 0) {
@@ -288,13 +390,17 @@
         $('#functions-list').empty()
         for (var i = 0; i < data.length; i++) {
             $('#functions-list').append(`<li class="nav-item">
-                <a id="nav_${data[i]['id']}" name="nav" class="nav-link ${active == data[i]['id'] ? 'active' : ''} " aria-current="page"  style="padding-right:30px;"><span onclick="SetBodyContent(${data[i]['id']})">${data[i]['name']}</span></a>
+                <a id="nav_${data[i]['id']}" name="nav" class="nav-link ${active == data[i]['id'] ? 'active' : ''} " aria-current="page"  style="padding-right:30px;"><span onclick="SetBodyContent(${data[i]['id']},'navtap')">${data[i]['name']}</span></a>
                 </li>`);
         }
     }
 
 
     function setProgressBars(function_id) {
+
+       
+
+
         var data = store.getState()['Categories']
         console.log(data);
         $('#progress-list').append('loading...')
@@ -305,20 +411,26 @@
                 //     console.log(currentCategory_id_id,categoryItemsCount);
                 //     console.log("categoryItemsCount", categoryItemsCount);
                 $('#progress-list').append(`<div class="col-xl-2  col-md-6  pt-3">
-              <div class="row text-center">
-                <span class=" sub-cat">${data[i]['name']}</span>
-              </div>
+              
               <div>
                 <div class="progress"  style="height: 25px;">
                   <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" id="category${data[i]['id']}" style="width: 0%; background:#00b55a;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
+              <div class="row text-center" style="">
+                <span class=" sub-cat">${data[i]['name']}</span>
+              </div>
             </div>`);
             }
         }
+
+        tabProgressBarState = store.getState()['tabProgressBarState'][function_id-1]
+        console.log(tabProgressBarState);
+        calcpercentage(tabProgressBarState['subCategoryListLength'],tabProgressBarState['dividentProgress'],tabProgressBarState['currentCategoryIndex'])
     }
 
     function seperateCategories(function_id) {
+        
         category_ids = []
         var array = store.getState()['Categories']
         for (var i = 0; i < array.length; i++) {
@@ -364,12 +476,28 @@
                 store.dispatch({ type: 'CURRENTSUBCATEGORYINDEX', data: subcategory_index })
                 // store.getState()['CategoryIdList']
                 // setTimeout(function () {
+                currentCategoryIdListIndex = store.getState()['currentCategoryIdListIndex']
                 currentCategoryIndex = store.getState()['currentCategoryIndex']
                 console.log(currentCategoryIndex,"currentCategoryIndex + 1 ++++++++++")
                 category_id = store.getState()['CategoryIdList']
-                if(category_id.length == currentCategoryIndex){
+                if(category_id.length == currentCategoryIdListIndex+1){
                     console.log("PROTECTED....",category_id.length, currentCategoryIndex)
                     currentFunctionId = store.getState()['currentFunctionId']
+                    var currentProgressCount = store.getState()['currentProgressCount']
+                    var lastProgressCount = store.getState()['lastProgressCount']
+                    //tabProgressBarState
+                    // var tabProgressBarState = {}
+                    // tabProgressBarState[`${currentFunctionId}`] = {
+                    //     'currentProgressCount':currentProgressCount,
+                    //     'lastProgressCount':lastProgressCount
+                    // }
+                    // store.dispatch({ type: 'TABPROGRESSBARSTATE', data: tabProgressBarState })
+                    //  //tabProgressBarState
+                    tabProgressBarState = store.getState()['tabProgressBarState']
+                    tabProgressBarState[currentFunctionId-1]['complete'] =true;
+                    store.dispatch({ type: 'TABPROGRESSBARSTATE', data: tabProgressBarState })
+
+                   
                     SetBodyContent(currentFunctionId+1)
                 }else{
                     console.log(currentCategoryIndex)
@@ -464,6 +592,7 @@
         else {
             question_index = 0
             store.dispatch({ type: 'CURRENTQUESTION', data: 0 })
+            
             subcategory_index = store.getState()['currentSubCategoryIndex']
 
             setSubCategories(subcategory_index + 1);
@@ -523,8 +652,8 @@
             $('#your_level').append(`<h2 class="col-12 text-center">What is your ${data[question_index]['level_name']}?</h2>`);
             if(question_index==4){
                 $('#ajax_updated').append(`<div class="col-xl-3  col-md-4 row mt-2 d-flex justify-content-center">
-                    <h3>33.88</h3>
-                    <div id="${data[question_index]['options'][2]['option']}" class="row option d-flex justify-content-center" onclick="" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][2]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
+                   <div class="col-12  d-flex justify-content-center align-items-center"><h1 style="color:#e85500">90%</h1></div>
+                    <div id="${data[question_index]['options'][6]['option']}" class="row option d-flex justify-content-center" onclick=""  style="background:#e85500;color:white" name="opts"><span class="col-8 d-flex justify-content-center" >${data[question_index]['options'][6]['option']}</span> <i class="d-flex justify-content-center col-2 fas fa-info-circle info-icon "></i></div>
                 </div>`);
             }
             else{
@@ -576,7 +705,8 @@
     }
     
     ///////// MAIN BODY setter start //////////////////
-    function SetBodyContent(function_id, subcategory_index = 0, question_index = 0) {
+    function SetBodyContent(function_id,mode="auto", subcategory_index = 0, question_index = 0) {
+      
         $("#next").hide()
         $("#prev").hide()
         $('#sybcat').empty()
@@ -585,22 +715,40 @@
         $('#your_level').empty()
         store.dispatch({ type: 'CURRENTFUNCTIONID', data: function_id })
         initNavElements(function_id);
-        setProgressBars(function_id);
         seperateCategories(function_id);
-
-        // setTimeout(function () {
+        setProgressBars(function_id);
+        if(mode=="navtap"){
+                setPageStateIndexValues();
+                $(".box").show()
+                 
+                question_index = store.getState()['currentQuestionId']
+                category_id = store.getState()['currentCategoryIndex']
+                subcategory_index = store.getState()['currentSubCategoryIndex']
+          
+                    seperateSubCategories(category_id)
+                    setPreviousSubCategories(subcategory_index);
+                    setPreviousQuestions(question_index)
+                
+                    $("#next").show()
+                    $("#prev").show()
+            }else{
+  // setTimeout(function () {
             $(".box").show()
-            category_id = store.getState()['CategoryIdList'][0]
-            store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: category_id })
-            category_id_list = store.getState()['CategoryIdList']
-            store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list.indexOf(category_id)})
-            console.log(category_id,"category_idcategory_id");
-            seperateSubCategories(category_id)
-            setPreviousSubCategories(subcategory_index);
-            setPreviousQuestions(question_index)
-            $("#next").show()
-            $("#prev").show()
+                    category_id = store.getState()['CategoryIdList'][0]
+                    store.dispatch({ type: 'CURRENTCATEGORYINDEX', data: category_id })
+                    category_id_list = store.getState()['CategoryIdList']
+                    store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list.indexOf(category_id)})
+                    console.log(category_id,"category_idcategory_id");
+                    seperateSubCategories(category_id)
+                    setPreviousSubCategories(subcategory_index);
+                    setPreviousQuestions(question_index)
+                
+                    $("#next").show()
+                    $("#prev").show()
         // }, 1000)
+            }
+
+      
 
        
 
@@ -616,12 +764,13 @@
         category_id_list = store.getState()['CategoryIdList']
         console.log(category_id_list + "***********************");
         console.log(category_id_list.length + "---")
-        store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list -1})
+        store.dispatch({ type: 'CURRENTCATEGORYIDLISTINDEX', data: category_id_list.length -1})
         console.log(category_id_list.length-1 + "***********************");
         store.dispatch({ type: 'CURRENTFUNCTIONID', data: function_id })
         initNavElements(function_id);
-        setProgressBars(function_id);
         seperateCategories(function_id);
+        setProgressBars(function_id);
+       
 
         // setTimeout(function () {
             // $(".box").show()
@@ -664,10 +813,21 @@
         var percentage = (dividentProgress/(subCategoryList.length * 8))*100;
         console.log(percentage+ '%%%%%%%%%%%%%%%%%%%%');
     $(`#category${currentCategoryIndex}`).css('width', `${percentage}%`)
+
+    currentFunctionId = store.getState()['currentFunctionId']
+    tabProgressBarState = store.getState()['tabProgressBarState']
+    tabProgressBarState[currentFunctionId-1]['subCategoryListLength'] = subCategoryList.length
+    tabProgressBarState[currentFunctionId-1]['dividentProgress'] = dividentProgress
+    tabProgressBarState[currentFunctionId-1]['currentCategoryIndex'] = currentCategoryIndex
+    store.dispatch({ type: 'TABPROGRESSBARSTATE', data: tabProgressBarState })
     // store.dispatch({ type: 'DIVIDENTPROGRESS', data: 0 })
     }
 
     function next() {
+        
+  
+
+
         var dividentProgress = store.getState()['dividentProgress']
         store.dispatch({ type: 'DIVIDENTPROGRESS', data: dividentProgress + 1 })
         $(".box").show()
@@ -676,13 +836,38 @@
         setQuestions(question_index)
         var currentProgressCount = store.getState()['currentProgressCount']
         var lastProgressCount = store.getState()['lastProgressCount']
-        if(currentProgressCount == lastProgressCount){
+
+        currentFunctionId = store.getState()['currentFunctionId']
+        tabProgressBarState = store.getState()['tabProgressBarState']
+       
+            if(currentProgressCount == lastProgressCount){
                     store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount + 1 })
                     store.dispatch({ type: 'LASTPROGRESSCOUNT', data:lastProgressCount +1})
+                    if(tabProgressBarState[currentFunctionId-1]['complete'] == false){
                     updateProgress()
-        }else{
-            store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount + 1 })
-        }
+                    }
+            }else{
+                store.dispatch({ type: 'CURRENTPROGRESSCOUNT', data: currentProgressCount + 1 })
+            }
+        
+                      //saving status of tab page before going to new tab
+                      currentFunctionId = store.getState()['currentFunctionId']
+                      currentQuestionId = store.getState()['currentQuestionId']
+        currentSubCategoryIndex = store.getState()['currentSubCategoryIndex']
+        currentCategoryIdListIndex = store.getState()['currentCategoryIdListIndex']
+        lastProgressCount = store.getState()['lastProgressCount']
+        currentProgressCount = store.getState()['currentProgressCount']
+
+        tabProgressBarState = store.getState()['tabProgressBarState']
+        tabProgressBarState[currentFunctionId-1]['currentQuestionId'] =currentQuestionId;
+        tabProgressBarState[currentFunctionId-1]['currentSubCategoryIndex'] =currentSubCategoryIndex;
+        tabProgressBarState[currentFunctionId-1]['currentCategoryIdListIndex'] =currentCategoryIdListIndex;
+        tabProgressBarState[currentFunctionId-1]['lastProgressCount'] =lastProgressCount;
+        tabProgressBarState[currentFunctionId-1]['currentProgressCount'] =currentProgressCount;
+
+        store.dispatch({ type: 'TABPROGRESSBARSTATE', data: tabProgressBarState })
+        //saving status of tab page before going to new tab
+     
     }
 
     function previous() {
@@ -697,3 +882,6 @@
 </script>
 
 {% endblock %}
+
+
+
